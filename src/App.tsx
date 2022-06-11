@@ -1,25 +1,71 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Tooltip } from "./components/tooltip";
+import { DummyBox } from "./components/dummyBox";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          height: "100vh",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Tooltip
+            alignment="left"
+            message="este es un mensaje que debe quedar contenido en el tooltip"
+          >
+            <DummyBox color="red">LEFT</DummyBox>
+          </Tooltip>
+          <div></div>
+          <Tooltip
+            alignment="right"
+            message="este es un mensaje que debe quedar contenido en el tooltip"
+          >
+            <DummyBox color="grey">RIGHT</DummyBox>
+          </Tooltip>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Tooltip
+            alignment="bottom"
+            message="este es un mensaje que debe quedar contenido en el tooltip"
+          >
+            <DummyBox color="blue">BOTTOM</DummyBox>
+          </Tooltip>
+          <Tooltip
+            alignment="top"
+            message="este es un mensaje que debe quedar contenido en el tooltip"
+          >
+            <DummyBox color="pink">TOP</DummyBox>
+          </Tooltip>
+        </div>
+      </div>
+      <Tooltip
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+        alignment="top"
+        message="este es un mensaje que debe quedar contenido en el tooltip"
+      >
+        <DummyBox color="pink">TOP</DummyBox>
+      </Tooltip>
+    </>
   );
 }
 
