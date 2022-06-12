@@ -121,8 +121,8 @@ const getArrowPosition: GetArrowPosition = ({
 };
 
 export const TooltipMessage = styled.div<TooltipMessageProps>`
-  /* display: none; */
-  visibility: hidden;
+  display: none;
+  /* visibility: hidden; */
   background: black;
   color: white;
   position: absolute;
@@ -146,7 +146,7 @@ export const TooltipMessage = styled.div<TooltipMessageProps>`
 export const TooltipWrapper = styled.div`
   position: relative;
 
-  &:hover ${TooltipMessage} {
+  & ${TooltipMessage}.active {
     display: block;
     visibility: visible;
   }

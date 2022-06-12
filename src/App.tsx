@@ -20,9 +20,11 @@ function App() {
           }}
         >
           <Tooltip
+            isOpen={true}
+            debug
             alignment="top"
             message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet sollicitudin elit, sed consequat odio. Praesent a erat quis sapien consequat venenatis. Suspendisse placerat non enim sit amet tristique. Mauris a massa sed purus eleifend tempor vel et enim. Morbi interdum tristique libero, ac condimentum nulla. Aenean ante purus, pharetra non purus at, euismod tempus odio. Mauris quis risus neque. Suspendisse gravida pellentesque faucibus. Mauris ac lacus at justo semper efficitur. Integer vel diam sapien. Curabitur tincidunt varius orci quis pretium. Nunc sit amet dui eget quam rhoncus placerat non vitae dui. Morbi nisl felis, dictum non dui in, tincidunt mattis nibh."
-            >
+          >
             <DummyBox color="red">LEFT</DummyBox>
           </Tooltip>
           <div></div>
@@ -55,7 +57,7 @@ function App() {
             <DummyBox color="blue">BOTTOM</DummyBox>
           </Tooltip>
           <Tooltip
-          debug
+            debug
             alignment="top"
             message="este es un mensaje que debe quedar contenido en el tooltip"
           >
@@ -64,6 +66,7 @@ function App() {
         </div>
       </div>
       <Tooltip
+        isOpen={true}
         style={{
           position: "absolute",
           left: "50%",
@@ -75,6 +78,102 @@ function App() {
       >
         <DummyBox color="pink">TOP</DummyBox>
       </Tooltip>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit
+        amet sollicitudin elit, sed consequat odio. Praesent a erat quis sapien
+        consequat venenatis. Suspendisse placerat non enim sit amet tristique.
+        Mauris a massa sed purus eleifend tempor vel et enim. Morbi interdum
+        tristique libero, ac condimentum nulla. Aenean ante purus, pharetra non
+        purus at, euismod tempus odio. Mauris quis risus neque. Suspendisse
+        gravida pellentesque faucibus. Mauris ac lacus at justo semper
+        efficitur. Integer vel diam sapien. Curabitur tincidunt varius orci quis
+        pretium. Nunc sit amet dui eget quam rhoncus placerat non vitae dui.
+        Morbi nisl felis, dictum non dui in, tincidunt mattis nibh.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit
+        amet sollicitudin elit, sed consequat odio. Praesent a erat quis sapien
+        consequat venenatis. Suspendisse placerat non enim sit amet tristique.
+        Mauris a massa sed purus eleifend tempor vel et enim. Morbi interdum
+        tristique libero, ac condimentum nulla. Aenean ante purus, pharetra non
+        purus at, euismod tempus odio. Mauris quis risus neque. Suspendisse
+        gravida pellentesque faucibus. Mauris ac lacus at justo semper
+        efficitur. Integer vel diam sapien. Curabitur tincidunt varius orci quis
+        pretium. Nunc sit amet dui eget quam rhoncus placerat non vitae dui.
+        Morbi nisl felis, dictum non dui in, tincidunt mattis nibh.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit
+        amet sollicitudin elit, sed consequat odio. Praesent a erat quis sapien
+        consequat venenatis. Suspendisse placerat non enim sit amet tristique.
+        Mauris a massa sed purus eleifend tempor vel et enim. Morbi interdum
+        tristique libero, ac condimentum nulla. Aenean ante purus, pharetra non
+        purus at, euismod tempus odio. Mauris quis risus neque. Suspendisse
+        gravida pellentesque faucibus. Mauris ac lacus at justo semper
+        efficitur. Integer vel diam sapien. Curabitur tincidunt varius orci quis
+        pretium. Nunc sit amet dui eget quam rhoncus placerat non vitae dui.
+        Morbi nisl felis, dictum non dui in, tincidunt mattis nibh.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit
+        amet sollicitudin elit, sed consequat odio. Praesent a erat quis sapien
+        consequat venenatis. Suspendisse placerat non enim sit amet tristique.
+        Mauris a massa sed purus eleifend tempor vel et enim. Morbi interdum
+        tristique libero, ac condimentum nulla. Aenean ante purus, pharetra non
+        purus at, euismod tempus odio. Mauris quis risus neque. Suspendisse
+        gravida pellentesque faucibus. Mauris ac lacus at justo semper
+        efficitur. Integer vel diam sapien. Curabitur tincidunt varius orci quis
+        pretium. Nunc sit amet dui eget quam rhoncus placerat non vitae dui.
+        Morbi nisl felis, dictum non dui in, tincidunt mattis nibh.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit
+        amet sollicitudin elit, sed consequat odio. Praesent a erat quis sapien
+        consequat venenatis. Suspendisse placerat non enim sit amet tristique.
+        Mauris a massa sed purus eleifend tempor vel et enim. Morbi interdum
+        tristique libero, ac condimentum nulla. Aenean ante purus, pharetra non
+        purus at, euismod tempus odio. Mauris quis risus neque. Suspendisse
+        gravida pellentesque faucibus. Mauris ac lacus at justo semper
+        efficitur. Integer vel diam sapien. Curabitur tincidunt varius orci quis
+        pretium. Nunc sit amet dui eget quam rhoncus placerat non vitae dui.
+        Morbi nisl felis, dictum non dui in, tincidunt mattis nibh.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit
+        amet sollicitudin elit, sed consequat odio. Praesent a erat quis sapien
+        consequat venenatis. Suspendisse placerat non enim sit amet tristique.
+        Mauris a massa sed purus eleifend tempor vel et enim. Morbi interdum
+        tristique libero, ac condimentum nulla. Aenean ante purus, pharetra non
+        purus at, euismod tempus odio. Mauris quis risus neque. Suspendisse
+        gravida pellentesque faucibus. Mauris ac lacus at justo semper
+        efficitur. Integer vel diam sapien. Curabitur tincidunt varius orci quis
+        pretium. Nunc sit amet dui eget quam rhoncus placerat non vitae dui.
+        Morbi nisl felis, dictum non dui in, tincidunt mattis nibh.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit
+        amet sollicitudin elit, sed consequat odio. Praesent a erat quis sapien
+        consequat venenatis. Suspendisse placerat non enim sit amet tristique.
+        Mauris a massa sed purus eleifend tempor vel et enim. Morbi interdum
+        tristique libero, ac condimentum nulla. Aenean ante purus, pharetra non
+        purus at, euismod tempus odio. Mauris quis risus neque. Suspendisse
+        gravida pellentesque faucibus. Mauris ac lacus at justo semper
+        efficitur. Integer vel diam sapien. Curabitur tincidunt varius orci quis
+        pretium. Nunc sit amet dui eget quam rhoncus placerat non vitae dui.
+        Morbi nisl felis, dictum non dui in, tincidunt mattis nibh.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit
+        amet sollicitudin elit, sed consequat odio. Praesent a erat quis sapien
+        consequat venenatis. Suspendisse placerat non enim sit amet tristique.
+        Mauris a massa sed purus eleifend tempor vel et enim. Morbi interdum
+        tristique libero, ac condimentum nulla. Aenean ante purus, pharetra non
+        purus at, euismod tempus odio. Mauris quis risus neque. Suspendisse
+        gravida pellentesque faucibus. Mauris ac lacus at justo semper
+        efficitur. Integer vel diam sapien. Curabitur tincidunt varius orci quis
+        pretium. Nunc sit amet dui eget quam rhoncus placerat non vitae dui.
+        Morbi nisl felis, dictum non dui in, tincidunt mattis nibh.
+      </p>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit
         amet sollicitudin elit, sed consequat odio. Praesent a erat quis sapien
