@@ -43,7 +43,7 @@ const getMessagePosition: GetMessagePosition = ({
         top: 100%;
         transform: translate(
           ${collisionLeft || collisionRight ? 0 : "-50%"},
-          calc(0% + ${ARROW_SIZE_PX}px)
+          ${ARROW_SIZE_PX}px
         );
         right: ${collisionRight ? "1px" : collisionLeft ? "auto" : "50%"};
         left: ${collisionLeft ? "1px" : collisionRight ? "auto" : "50%"};
@@ -63,7 +63,7 @@ const getMessagePosition: GetMessagePosition = ({
     default:
       return css`
         transform: translate(
-          calc(0% + ${ARROW_SIZE_PX}px),
+          ${ARROW_SIZE_PX}px,
           ${collisionTop || collisionBottom ? 0 : "-50%"}
         );
         top: ${collisionTop ? "1px" : collisionBottom ? "auto" : "50%"};
@@ -74,43 +74,55 @@ const getMessagePosition: GetMessagePosition = ({
   }
 };
 
-const getArrowPosition: GetArrowPosition = ({ alignment }) => {
+const getArrowPosition: GetArrowPosition = ({
+  alignment,
+  collisionTop,
+  collisionBottom,
+}) => {
   switch (alignment) {
     case "top":
       return css`
+        border-color: black transparent transparent transparent;
         top: 100%;
         left: 50%;
         margin-left: -${ARROW_SIZE_PX}px;
-        border-color: black transparent transparent transparent;
       `;
     case "bottom":
       return css`
+        border-color: transparent transparent black transparent;
         bottom: 100%;
         left: 50%;
         margin-left: -${ARROW_SIZE_PX}px;
-        border-color: transparent transparent black transparent;
       `;
     case "left":
       return css`
-        top: 50%;
-        left: 100%;
-        margin-top: -${ARROW_SIZE_PX}px;
         border-color: transparent transparent transparent black;
+        left: 100%;
+        top: ${collisionTop ? "4px" : collisionBottom ? "auto" : "50%"};
+        margin-top: ${collisionTop
+          ? "0px"
+          : collisionBottom
+          ? "auto"
+          : -ARROW_SIZE_PX + "px"};
       `;
     // right by default
     default:
       return css`
-        top: 50%;
-        right: 100%;
-        margin-top: -${ARROW_SIZE_PX}px;
         border-color: transparent black transparent transparent;
+        right: 100%;
+        top: ${collisionTop ? "4px" : collisionBottom ? "auto" : "50%"};
+        margin-top: ${collisionTop
+          ? "0px"
+          : collisionBottom
+          ? "auto"
+          : -ARROW_SIZE_PX + "px"};
       `;
   }
 };
 
 export const TooltipMessage = styled.div<TooltipMessageProps>`
   /* display: none; */
-  /* visibility: hidden; */
+  visibility: hidden;
   background: black;
   color: white;
   position: absolute;
