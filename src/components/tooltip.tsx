@@ -1,74 +1,157 @@
-import { log } from "console";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { TooltipWrapper, TooltipMessage } from "./tooltip.styled";
 
+type Aligment = "right" | "left" | "top" | "bottom";
+
 type Props = {
-  alignment: "right" | "left" | "top" | "bottom";
+  alignment: Aligment;
   children: React.ReactNode;
   message: string;
   style?: Object;
+  debug?: boolean;
+};
+
+type Collisions = {
+  secureAlignment: Aligment;
+  top: boolean;
+  right: boolean;
+  bottom: boolean;
+  left: boolean;
 };
 
 export const Tooltip: React.FC<Props> = ({
   children,
-  alignment,
+  alignment = "top",
   message,
   ...rest
 }) => {
-  const wrapper = useRef<HTMLInputElement>(null);
   const popup = useRef<HTMLInputElement>(null);
+  const [collisions, setCollisions] = useState<Collisions>({
+    secureAlignment: alignment,
+    top: false,
+    right: false,
+    bottom: false,
+    left: false,
+  });
 
-  // const [rect, setRect] = useState({
-  //   height: 0,
-  //   bottom: 0,
-  //   right: 0,
-  //   left: 0,
-  //   width: 0,
-  //   x: 0,
-  //   y: 0,
-  // });
-  // const [rectWrapper, setRectWrapper] = useState({
-  //   height: 0,
-  //   bottom: 0,
-  //   right: 0,
-  //   left: 0,
-  //   width: 0,
-  //   x: 0,
-  //   y: 0,
-  // });
+  const verifyCollisions = () => {
+    if (popup.current) {
+      const { right, left, top, bottom } =
+        popup.current.getBoundingClientRect();
 
-  // useLayoutEffect(() => {
-  //   if (popup.current && wrapper.current) {
-  //     const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
-  //     // console.log(windowWidth, windowHeight);
-  //     const rect = popup.current.getBoundingClientRect();
-  //     setRect(rect);
-  //     const rectWrapper = wrapper.current.getBoundingClientRect();
-  //     setRectWrapper(rectWrapper);
-  //     // const { height, width, x, y } = rect;
-  //     console.log({ rect, rectWrapper });
+      const newCollisions = {
+        top: top < 0,
+        right: right > window.innerWidth,
+        bottom: bottom > window.innerHeight,
+        left: left < 0,
+      };
+      
+      switch (alignment) {
+        case "top":
+          return setCollisions({
+            ...newCollisions,
+            secureAlignment: newCollisions.top ? "bottom" : "top",
+            top: false,
+          });
+        case "bottom":
+          return setCollisions({
+            ...newCollisions,
+            secureAlignment: newCollisions.bottom ? "top" : "bottom",
+            bottom: false,
+          });
+        case "left":
+          return setCollisions({
+            ...newCollisions,
+            secureAlignment: newCollisions.left ? "right" : "left",
+            left: false,
+          });
+        // right by default
+        default:
+          return setCollisions({
+            ...newCollisions,
+            secureAlignment: newCollisions.right ? "left" : "right",
+            right: false,
+          });
+      }
 
-  //     // if width + x > windowWidth ( right overflow )
-  //     // then -rect.x + rect.width - window.innerWidth
-  //   }
-  // }, []);
+      // if (alignment === "right") {
+      //   new
+      //   setSecure((secure) => ({
+      //     ...secure,
+      //     secureAlignment: right > windowWidth ? "left" : alignment,
+      //     topModifier: top < 0 ? Math.abs(top) : 0,
+      //     // leftModifier: top < 0 ? Math.abs(top) : 0,
+      //   }));
+      // }
+      // if (alignment === "left") {
+      //   setSecure((secure) => ({
+      //     ...secure,
+      //     secureAlignment: left < 0 ? "right" : alignment,
+      //     topModifier: top < 0 ? Math.abs(top) : 0,
+      //     // leftModifier: top < 0 ? Math.abs(top) : 0,
+      //   }));
+      // }
+      // if (alignment === "top") {
+      //   setSecure((secure) => ({
+      //     ...secure,
+      //     secureAlignment: top < 0 ? "bottom" : alignment,
+      //     leftModifier:
+      //       left < 0
+      //         ? Math.abs(left)
+      //         : right > windowWidth
+      //         ? windowWidth - right
+      //         : 0,
+      //   }));
+      // }
 
-  // let translateX = rectWrapper.width;
-  // let translateY = rectWrapper.height;
+      // rest.debug &&
+      //   console.log(
+      //     left < 0
+      //       ? Math.abs(left)
+      //       : right > windowWidth
+      //       ? windowWidth - right
+      //       : 0
+      //   );
 
-  // if (rect.right >= window.innerWidth) {
-  //   console.log(rect.right + rect.width);
-  //   translateX =
-  //     window.innerWidth - rect.right + rect.width + rectWrapper.width;
-  // }
+      // if (alignment === "bottom") {
+      //   setSecure((secure) => ({
+      //     ...secure,
+      //     secureAlignment: bottom > windowHeight ? "top" : alignment,
+      //     // topModifier: top < 0 ? Math.abs(top) : 0,
+      //     leftModifier:
+      //       left < 0
+      //         ? Math.abs(left)
+      //         : right > windowWidth
+      //         ? windowWidth - right
+      //         : 0,
+      //   }));
+      // }
+    }
+  };
 
-  // if (rect.bottom + rectWrapper.height >= window.innerHeight) {
-  //   translateY = window.innerHeight - rect.bottom - rectWrapper.height;
-  // }
+  useEffect(() => {
+    verifyCollisions();
+
+    // if (rest.debug && popup.current) {
+    //   const popupRect = popup.current.getBoundingClientRect();
+    //   const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
+
+    //   console.log({ popupRect, windowWidth, windowHeight });
+    // }
+  }, [alignment]);
+
+  rest.debug && console.log(collisions);
 
   return (
-    <TooltipWrapper ref={wrapper} {...rest}>
-      <TooltipMessage ref={popup} alignment={alignment}>
+    <TooltipWrapper {...rest}>
+      <TooltipMessage
+        ref={popup}
+        alignment={collisions.secureAlignment}
+        collisionTop={collisions.top}
+        collisionRight={collisions.right}
+        collisionBottom={collisions.bottom}
+        collisionLeft={collisions.left}
+      >
         {message}
       </TooltipMessage>
       {children}

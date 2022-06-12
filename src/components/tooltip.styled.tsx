@@ -1,48 +1,80 @@
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 
-export const TooltipWrapper = styled.div`
-  position: relative;
-`;
-
 type Aligment = "right" | "left" | "top" | "bottom";
-
-interface TooltipMessageProps {
-  alignment: Aligment;
-}
 
 const ARROW_SIZE_PX = 8;
 
-function getMessagePosition(alignment: Aligment): FlattenSimpleInterpolation {
+interface TooltipMessageProps {
+  alignment: Aligment;
+  collisionTop?: boolean;
+  collisionRight?: boolean;
+  collisionBottom?: boolean;
+  collisionLeft?: boolean;
+}
+
+type GetMessagePosition = (
+  TooltipProps: TooltipMessageProps
+) => FlattenSimpleInterpolation;
+
+type GetArrowPosition = (
+  TooltipProps: TooltipMessageProps
+) => FlattenSimpleInterpolation;
+
+const getMessagePosition: GetMessagePosition = ({
+  alignment,
+  collisionTop,
+  collisionRight,
+  collisionBottom,
+  collisionLeft,
+}) => {
   switch (alignment) {
     case "top":
       return css`
-        transform: translate(-50%, calc(-100% - ${ARROW_SIZE_PX}px));
-        top: 0%;
-        left: 50%;
+        top: 0;
+        transform: translate(
+          ${collisionLeft || collisionRight ? 0 : "-50%"},
+          calc(-100% - ${ARROW_SIZE_PX}px)
+        );
+        right: ${collisionRight ? "1px" : collisionLeft ? "auto" : "50%"};
+        left: ${collisionLeft ? "1px" : collisionRight ? "auto" : "50%"};
       `;
     case "bottom":
       return css`
-        transform: translate(-50%, calc(0% + ${ARROW_SIZE_PX}px));
         top: 100%;
-        left: 50%;
+        transform: translate(
+          ${collisionLeft || collisionRight ? 0 : "-50%"},
+          calc(0% + ${ARROW_SIZE_PX}px)
+        );
+        right: ${collisionRight ? "1px" : collisionLeft ? "auto" : "50%"};
+        left: ${collisionLeft ? "1px" : collisionRight ? "auto" : "50%"};
       `;
     case "left":
       return css`
-        transform: translate(calc(-100% - ${ARROW_SIZE_PX}px), -50%);
-        top: 50%;
-        left: 0;
+        transform: translate(
+          calc(-100% - ${ARROW_SIZE_PX}px),
+          ${collisionTop || collisionBottom ? 0 : "-50%"}
+        );
+        top: ${collisionTop ? "1px" : collisionBottom ? "auto" : "50%"};
+        bottom: ${collisionBottom ? "1px" : "auto"};
+        right: ${collisionRight ? "1px" : "auto"};
+        left: ${collisionLeft ? "1px" : "auto"};
       `;
     // right by default
     default:
       return css`
-        transform: translate(calc(0% + ${ARROW_SIZE_PX}px), -50%);
-        top: 50%;
-        left: 100%;
+        transform: translate(
+          calc(0% + ${ARROW_SIZE_PX}px),
+          ${collisionTop || collisionBottom ? 0 : "-50%"}
+        );
+        top: ${collisionTop ? "1px" : collisionBottom ? "auto" : "50%"};
+        bottom: ${collisionBottom ? "1px" : "auto"};
+        right: ${collisionRight ? "1px" : "auto"};
+        left: ${collisionLeft ? "1px" : "100%"};
       `;
   }
-}
+};
 
-function getArrowPosition(alignment: Aligment): FlattenSimpleInterpolation {
+const getArrowPosition: GetArrowPosition = ({ alignment }) => {
   switch (alignment) {
     case "top":
       return css`
@@ -74,23 +106,36 @@ function getArrowPosition(alignment: Aligment): FlattenSimpleInterpolation {
         border-color: transparent black transparent transparent;
       `;
   }
-}
+};
 
 export const TooltipMessage = styled.div<TooltipMessageProps>`
+  /* display: none; */
+  /* visibility: hidden; */
   background: black;
   color: white;
   position: absolute;
   padding: 0.25em 0.5em;
   border-radius: 0.25em;
   min-width: 250px;
+  z-index: 1;
+  box-sizing: border-box;
 
-  ${({ alignment }) => getMessagePosition(alignment)}
+  ${getMessagePosition}
 
   &:after {
     content: " ";
     position: absolute;
     border-width: ${ARROW_SIZE_PX}px;
     border-style: solid;
-    ${({ alignment }) => getArrowPosition(alignment)}
+    ${getArrowPosition}
+  }
+`;
+
+export const TooltipWrapper = styled.div`
+  position: relative;
+
+  &:hover ${TooltipMessage} {
+    display: block;
+    visibility: visible;
   }
 `;
