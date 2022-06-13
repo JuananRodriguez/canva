@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useCallback, useRef, useState } from "react";
 import { TooltipWrapper, TooltipMessage } from "./tooltip.styled";
 
 type Aligment = "right" | "left" | "top" | "bottom";
@@ -13,7 +13,6 @@ type Props = {
 };
 
 type Collisions = {
-  secureAlignment: Aligment;
   top: boolean;
   right: boolean;
   bottom: boolean;
@@ -28,8 +27,8 @@ export const Tooltip: React.FC<Props> = ({
   ...rest
 }) => {
   const popup = useRef<HTMLInputElement>(null);
+  const secureAlignment = useRef<Aligment>(alignment);
   const natureAlignment: Collisions = {
-    secureAlignment: alignment,
     top: false,
     right: false,
     bottom: false,
@@ -38,7 +37,7 @@ export const Tooltip: React.FC<Props> = ({
   const [visible, setVisible] = useState(isOpen);
   const [collisions, setCollisions] = useState<Collisions>(natureAlignment);
 
-  const verifyCollisions = () => {
+  const verifyCollisions = useCallback(() => {
     if (popup.current) {
       const { right, left, top, bottom } =
         popup.current.getBoundingClientRect();
@@ -50,48 +49,44 @@ export const Tooltip: React.FC<Props> = ({
         left: left < 0,
       };
 
-      switch (collisions.secureAlignment) {
+      switch (secureAlignment.current) {
         case "top":
-          return setCollisions({
-            ...newCollisions,
-            secureAlignment: newCollisions.top ? "bottom" : "top",
-            top: false,
-          });
+          secureAlignment.current = newCollisions.top ? "bottom" : "top";
+          return setCollisions({ ...newCollisions, top: false });
         case "bottom":
-          return setCollisions({
-            ...newCollisions,
-            secureAlignment: newCollisions.bottom ? "top" : "bottom",
-            bottom: false,
-          });
+          secureAlignment.current = newCollisions.bottom ? "top" : "bottom";
+          return setCollisions({ ...newCollisions, bottom: false });
         case "left":
-          return setCollisions({
-            ...newCollisions,
-            secureAlignment: newCollisions.left ? "right" : "left",
-            left: false,
-          });
+          secureAlignment.current = newCollisions.left ? "right" : "left";
+          return setCollisions({ ...newCollisions, left: false });
         // right by default
         default:
-          return setCollisions({
-            ...newCollisions,
-            secureAlignment: newCollisions.right ? "left" : "right",
-            right: false,
-          });
+          secureAlignment.current = newCollisions.right ? "left" : "right";
+          return setCollisions({ ...newCollisions, right: false });
       }
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    setTimeout(verifyCollisions, 0);
+  }, [alignment, isOpen, verifyCollisions]);
+
+  useLayoutEffect(() => {
+    setVisible(isOpen);
+  }, [isOpen]);
+
+  const handleHover = () => {
+    if (isOpen === undefined) {
+      setVisible(true);
+      setTimeout(verifyCollisions, 0);
     }
   };
 
-  useEffect(() => {
-    setTimeout(verifyCollisions, 0);
-  }, [alignment, isOpen]);
-
-  const handleHover = () => {
-    isOpen === undefined && setVisible(true);
-    setTimeout(verifyCollisions, 0);
-  };
-
   const handleBlur = () => {
-    isOpen === undefined && setVisible(false);
-    setCollisions(natureAlignment);
+    if (isOpen === undefined) {
+      setVisible(false);
+      setCollisions(natureAlignment);
+    }
   };
 
   return (
@@ -103,7 +98,7 @@ export const Tooltip: React.FC<Props> = ({
       <TooltipMessage
         className={visible ? "active" : "no-active"}
         ref={popup}
-        alignment={collisions.secureAlignment}
+        alignment={secureAlignment.current}
         collisionTop={collisions.top}
         collisionRight={collisions.right}
         collisionBottom={collisions.bottom}

@@ -79,6 +79,7 @@ const getArrowPosition: GetArrowPosition = ({
   collisionTop,
   collisionBottom,
 }) => {
+  
   switch (alignment) {
     case "top":
       return css`
@@ -122,7 +123,7 @@ const getArrowPosition: GetArrowPosition = ({
 
 export const TooltipMessage = styled.div<TooltipMessageProps>`
   display: none;
-  /* visibility: hidden; */
+
   background: black;
   color: white;
   position: absolute;
@@ -148,6 +149,5 @@ export const TooltipWrapper = styled.div`
 
   & ${TooltipMessage}.active {
     display: block;
-    visibility: visible;
   }
 `;
